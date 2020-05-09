@@ -24,9 +24,7 @@ jobs:
           git remote add upstream https://github.com/Solaris-Skunk-Werks/solarisskunkwerks.git
           git fetch upstream
 
-          # Neither forget the -b opt,
-          # the develop ref is ambiguous at this stage
-          git checkout -b develop origin/develop
+          git checkout develop origin/develop
           git merge --no-edit upstream/develop
           git push origin develop
 
