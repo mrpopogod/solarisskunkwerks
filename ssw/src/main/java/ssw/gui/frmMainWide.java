@@ -198,7 +198,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         pnlVariants.add( Variants );
         pnlNotables.add( Notables );
         setViewToolbar( Prefs.getBoolean( "ViewToolbar", true ) );
-        setTitle( SSWConstants.AppDescription + " " + SSWConstants.Version );
+        setTitle( SSWConstants.AppDescription + " " + SSWConstants.GetVersion() );
         pack();
 
         mnuDetails.addActionListener( new java.awt.event.ActionListener() {
@@ -2075,7 +2075,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         }
     }
 
-    private void RefreshSummary() {
+    public void RefreshSummary() {
         // refreshes the display completely using info from the mech.
         txtSumIntTon.setText( "" + CurMech.GetIntStruc().GetTonnage() );
         txtSumEngTon.setText( "" + CurMech.GetEngine().GetTonnage() );
@@ -2728,7 +2728,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
             chkYearRestrict.setEnabled( true );
         }
         CurMech.SetChanged( false );
-        setTitle( SSWConstants.AppDescription + " " + SSWConstants.Version );
+        setTitle( SSWConstants.AppDescription + " " + SSWConstants.GetVersion() );
     }
 
     private void GetInfoOn() {
@@ -2747,6 +2747,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
     private void UnallocateAll() {
         // unallocates all crits for the current item from the loadout
         CurMech.GetLoadout().UnallocateAll( CurItem, false );
+        RefreshSummary();
         RefreshInfoPane();
     }
 
@@ -2757,6 +2758,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         } else {
             CurItem.MountRear( true );
         }
+        RefreshSummary();
         RefreshInfoPane();
     }
 
@@ -4644,7 +4646,6 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         btnExportMTFIcon = new javax.swing.JButton();
         btnChatInfo = new javax.swing.JButton();
         jSeparator23 = new javax.swing.JToolBar.Separator();
-        btnPostToS7 = new javax.swing.JButton();
         jSeparator25 = new javax.swing.JToolBar.Separator();
         btnAddToForceList = new javax.swing.JButton();
         btnForceList = new javax.swing.JButton();
@@ -5141,7 +5142,6 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         mnuPrintSavedMech = new javax.swing.JMenuItem();
         mnuPrintBatch = new javax.swing.JMenuItem();
         mnuPrintPreview = new javax.swing.JMenuItem();
-        mnuPostS7 = new javax.swing.JMenuItem();
         jSeparator17 = new javax.swing.JSeparator();
         mnuExit = new javax.swing.JMenuItem();
         mnuClearFluff = new javax.swing.JMenu();
@@ -5301,18 +5301,6 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         });
         tlbIconBar.add(btnChatInfo);
         tlbIconBar.add(jSeparator23);
-
-        btnPostToS7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ssw/Images/server.png"))); // NOI18N
-        btnPostToS7.setToolTipText("Upload to Solaris7.com");
-        btnPostToS7.setFocusable(false);
-        btnPostToS7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnPostToS7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnPostToS7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPostToS7ActionPerformed(evt);
-            }
-        });
-        tlbIconBar.add(btnPostToS7);
         tlbIconBar.add(jSeparator25);
 
         btnAddToForceList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ssw/Images/clipboard--plus.png"))); // NOI18N
@@ -7519,7 +7507,6 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         lstChooseBallistic.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lstChooseBallistic.setMaximumSize(new java.awt.Dimension(180, 10000));
         lstChooseBallistic.setMinimumSize(new java.awt.Dimension(180, 100));
-        lstChooseBallistic.setPreferredSize(null);
         lstChooseBallistic.setVisibleRowCount(16);
         lstChooseBallistic.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -7567,7 +7554,6 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         lstChooseEnergy.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lstChooseEnergy.setMaximumSize(new java.awt.Dimension(180, 10000));
         lstChooseEnergy.setMinimumSize(new java.awt.Dimension(180, 100));
-        lstChooseEnergy.setPreferredSize(null);
         lstChooseEnergy.setVisibleRowCount(16);
         lstChooseEnergy.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -7615,7 +7601,6 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         lstChooseMissile.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lstChooseMissile.setMaximumSize(new java.awt.Dimension(180, 10000));
         lstChooseMissile.setMinimumSize(new java.awt.Dimension(180, 100));
-        lstChooseMissile.setPreferredSize(null);
         lstChooseMissile.setVisibleRowCount(16);
         lstChooseMissile.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -7663,7 +7648,6 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         lstChoosePhysical.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lstChoosePhysical.setMaximumSize(new java.awt.Dimension(180, 10000));
         lstChoosePhysical.setMinimumSize(new java.awt.Dimension(180, 100));
-        lstChoosePhysical.setPreferredSize(null);
         lstChoosePhysical.setVisibleRowCount(16);
         lstChoosePhysical.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -7711,7 +7695,6 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         lstChooseEquipment.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lstChooseEquipment.setMaximumSize(new java.awt.Dimension(180, 10000));
         lstChooseEquipment.setMinimumSize(new java.awt.Dimension(180, 100));
-        lstChooseEquipment.setPreferredSize(null);
         lstChooseEquipment.setVisibleRowCount(16);
         lstChooseEquipment.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -7759,7 +7742,6 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         lstChooseArtillery.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lstChooseArtillery.setMaximumSize(new java.awt.Dimension(180, 10000));
         lstChooseArtillery.setMinimumSize(new java.awt.Dimension(180, 100));
-        lstChooseArtillery.setPreferredSize(null);
         lstChooseArtillery.setVisibleRowCount(16);
         lstChooseArtillery.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -7807,7 +7789,6 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         lstChooseAmmunition.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lstChooseAmmunition.setMaximumSize(new java.awt.Dimension(180, 10000));
         lstChooseAmmunition.setMinimumSize(new java.awt.Dimension(180, 100));
-        lstChooseAmmunition.setPreferredSize(null);
         lstChooseAmmunition.setVisibleRowCount(16);
         lstChooseAmmunition.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -8282,6 +8263,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
                             CurMech.GetLoadout().UnallocateByIndex( index, a );
                         }
                     }
+                    RefreshSummary();
                     RefreshInfoPane();
                 }
             }
@@ -8417,6 +8399,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
                             CurMech.GetLoadout().UnallocateByIndex( index, a );
                         }
                     }
+                    RefreshSummary();
                     RefreshInfoPane();
                 }
             }
@@ -8540,6 +8523,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
                             CurMech.GetLoadout().UnallocateByIndex( index, a );
                         }
                     }
+                    RefreshSummary();
                     RefreshInfoPane();
                 }
             }
@@ -8613,6 +8597,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
                             CurMech.GetLoadout().UnallocateByIndex( index, a );
                         }
                     }
+                    RefreshSummary();
                     RefreshInfoPane();
                 }
             }
@@ -8722,6 +8707,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
                             CurMech.GetLoadout().UnallocateByIndex( index, a );
                         }
                     }
+                    RefreshSummary();
                     RefreshInfoPane();
                 }
             }
@@ -8816,6 +8802,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
                             CurMech.GetLoadout().UnallocateByIndex( index, a );
                         }
                     }
+                    RefreshSummary();
                     RefreshInfoPane();
                 }
             }
@@ -8898,6 +8885,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
                             CurMech.GetLoadout().UnallocateByIndex( index, a );
                         }
                     }
+                    RefreshSummary();
                     RefreshInfoPane();
                 }
             }
@@ -8999,6 +8987,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
                             CurMech.GetLoadout().UnallocateByIndex( index, a );
                         }
                     }
+                    RefreshSummary();
                     RefreshInfoPane();
                 }
             }
@@ -10317,15 +10306,6 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
             }
         });
         mnuFile.add(mnuPrintPreview);
-
-        mnuPostS7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        mnuPostS7.setText("Post Mech to Solaris7.com");
-        mnuPostS7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuPostS7ActionPerformed(evt);
-            }
-        });
-        mnuFile.add(mnuPostS7);
         mnuFile.add(jSeparator17);
 
         mnuExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_DOWN_MASK));
@@ -10586,36 +10566,6 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         CurMech.SetChanged( changed );
     }//GEN-LAST:event_cmbOmniVariantActionPerformed
 
-	private void mnuPostS7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuPostS7ActionPerformed
-	    // attempts to post the mech to Solaris7.com
-    	// must do all the normal actions for HTML export, then attempt to post
-	    // right now we'll just show the screen so we can see it
-        // exports the mech to HTML format
-
-        //Save any changes to the Mech before posting...
-        QuickSave();
-
-	    String CurLoadout = "";
-	    if( CurMech.IsOmnimech() ) {
-	        CurLoadout = CurMech.GetLoadout().GetName();
-	    }
-
-	    // Solidify the mech first.
-	    SolidifyMech();
-
-	    if( ! VerifyMech( evt ) ) {
-	        return;
-	    }
-
-	    dlgPostToSolaris7 PostS7 = new dlgPostToSolaris7( this, true );
-        PostS7.setLocationRelativeTo( this );
-	    PostS7.setVisible( true );
-
-	    // lastly, if this is an omnimech, reset the display to the last loadout
-	    cmbOmniVariant.setSelectedItem( CurLoadout );
-	    cmbOmniVariantActionPerformed( evt );
-	}//GEN-LAST:event_mnuPostS7ActionPerformed
-
 	private void mnuClearUserDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuClearUserDataActionPerformed
         int choice = javax.swing.JOptionPane.showConfirmDialog( this,
             "This will remove all Solaris 7 user data.\nAre you sure you want to continue?", "Clear User Data?", javax.swing.JOptionPane.YES_NO_OPTION );
@@ -10688,7 +10638,7 @@ public class frmMainWide extends javax.swing.JFrame implements java.awt.datatran
         }
 
         setCursor( NormalCursor );
-        setTitle( SSWConstants.AppName + " " + SSWConstants.Version + " - " + CurMech.GetName() + " " + CurMech.GetModel() );
+        setTitle( SSWConstants.AppName + " " + SSWConstants.GetVersion() + " - " + CurMech.GetName() + " " + CurMech.GetModel() );
         CurMech.SetChanged( false );
 	}//GEN-LAST:event_mnuSaveActionPerformed
 
@@ -10762,7 +10712,7 @@ private void mnuSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         cmbOmniVariant.setSelectedItem( CurLoadout );
         cmbOmniVariantActionPerformed( evt );
     }
-    setTitle( SSWConstants.AppName + " " + SSWConstants.Version + " - " + CurMech.GetName() + " " + CurMech.GetModel() );
+    setTitle( SSWConstants.AppName + " " + SSWConstants.GetVersion() + " - " + CurMech.GetName() + " " + CurMech.GetModel() );
     CurMech.SetChanged( false );
     setCursor( NormalCursor );
 }//GEN-LAST:event_mnuSaveAsActionPerformed
@@ -11048,7 +10998,7 @@ public void LoadMechIntoGUI() {
         txtSumPAmpsACode.setVisible( true );
     }
 
-    setTitle( SSWConstants.AppName + " " + SSWConstants.Version + " - " + CurMech.GetName() + " " + CurMech.GetModel() );
+    setTitle( SSWConstants.AppName + " " + SSWConstants.GetVersion() + " - " + CurMech.GetName() + " " + CurMech.GetModel() );
 }
 
 private void mnuExportClipboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExportClipboardActionPerformed
@@ -11120,10 +11070,6 @@ private void btnExportMTFIconActionPerformed(java.awt.event.ActionEvent evt) {//
 private void btnExportClipboardIconActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportClipboardIconActionPerformed
     mnuExportClipboardActionPerformed(evt);
 }//GEN-LAST:event_btnExportClipboardIconActionPerformed
-
-private void btnPostToS7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPostToS7ActionPerformed
-    mnuPostS7ActionPerformed(evt);
-}//GEN-LAST:event_btnPostToS7ActionPerformed
 
 private void mnuFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuFileActionPerformed
 // TODO add your handling code here:
@@ -11379,7 +11325,7 @@ private void btnExportMTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
     // if there were no problems, let the user know how it went
     Media.Messager( this, "Mech saved successfully to MTF:\n" + filename );
-    setTitle( SSWConstants.AppName + " " + SSWConstants.Version + " - " + CurMech.GetName() + " " + CurMech.GetModel() );
+    setTitle( SSWConstants.AppName + " " + SSWConstants.GetVersion() + " - " + CurMech.GetName() + " " + CurMech.GetModel() );
 }//GEN-LAST:event_btnExportMTFActionPerformed
 
 private void btnExportHTMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportHTMLActionPerformed
@@ -11416,7 +11362,7 @@ private void btnExportHTMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN
         cmbOmniVariant.setSelectedItem( CurLoadout );
         cmbOmniVariantActionPerformed( evt );
     }
-    setTitle( SSWConstants.AppName + " " + SSWConstants.Version + " - " + CurMech.GetName() + " " + CurMech.GetModel() );
+    setTitle( SSWConstants.AppName + " " + SSWConstants.GetVersion() + " - " + CurMech.GetName() + " " + CurMech.GetModel() );
 }//GEN-LAST:event_btnExportHTMLActionPerformed
 
 private void btnExportTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportTXTActionPerformed
@@ -11453,7 +11399,7 @@ private void btnExportTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
         cmbOmniVariant.setSelectedItem( CurLoadout );
         cmbOmniVariantActionPerformed( evt );
     }
-    setTitle( SSWConstants.AppName + " " + SSWConstants.Version + " - " + CurMech.GetName() + " " + CurMech.GetModel() );
+    setTitle( SSWConstants.AppName + " " + SSWConstants.GetVersion() + " - " + CurMech.GetName() + " " + CurMech.GetModel() );
 }//GEN-LAST:event_btnExportTXTActionPerformed
 
 private void btnClearImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearImageActionPerformed
@@ -12305,13 +12251,7 @@ private void btnAddEquipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         try {
             CurMech.GetLoadout().CheckExclusions( a );
             if( a instanceof Equipment ) {
-                if ( ! ((Equipment) a).Validate( CurMech ) ) {
-                    if( ((Equipment) a).RequiresQuad() ) {
-                        throw new Exception( a.CritName() + " may only be mounted on a quad 'Mech." );
-                    } else if( ((Equipment) a).MaxAllowed() > 0 ) {
-                        throw new Exception( "Only " + ((Equipment) a).MaxAllowed() + " " + a.CritName() + "(s) may be mounted on one 'Mech." );
-                    }
-                }
+                ((Equipment) a).Validate(CurMech);
             }
         } catch( Exception e ) {
             Media.Messager( e.getMessage() );
@@ -13726,6 +13666,13 @@ private void btnLockChassisActionPerformed(java.awt.event.ActionEvent evt) {//GE
         tbpMainTabPane.setSelectedComponent( pnlEquipment );
         return;
     }
+    
+    // 2020-10-19 Omnis can't have Hardened Armor, but we wrote this generic
+    // in case later other armor types com along
+    if (!CurMech.GetArmor().AllowOmni()){
+        Media.Messager( this, "Omnimechs are not allowed to have " + CurMech.GetArmor().ActualName());
+        return;
+    }
 
     int choice = javax.swing.JOptionPane.showConfirmDialog( this,
             "Are you sure you want to lock the chassis?\nAll items in the base " +
@@ -14859,7 +14806,6 @@ private void setViewToolbar(boolean Visible)
     private javax.swing.JButton btnNewIcon;
     private javax.swing.JButton btnOpen;
     private javax.swing.JButton btnOptionsIcon;
-    private javax.swing.JButton btnPostToS7;
     private javax.swing.JButton btnPrintIcon;
     private javax.swing.JButton btnPrintPreview;
     private javax.swing.JButton btnRemainingArmor;
@@ -15215,7 +15161,6 @@ private void setViewToolbar(boolean Visible)
     private javax.swing.JMenuItem mnuNewMech;
     private javax.swing.JMenuItem mnuOpen;
     private javax.swing.JMenuItem mnuOptions;
-    private javax.swing.JMenuItem mnuPostS7;
     private javax.swing.JMenu mnuPrint;
     private javax.swing.JMenuItem mnuPrintBatch;
     private javax.swing.JMenuItem mnuPrintCurrentMech;

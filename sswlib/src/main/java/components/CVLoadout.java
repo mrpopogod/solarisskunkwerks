@@ -32,6 +32,7 @@ import common.CommonTools;
 import common.Constants;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 import visitors.VFCSApolloLoader;
 import visitors.VFCSArtemisIVLoader;
@@ -313,6 +314,8 @@ public class CVLoadout implements ifCVLoadout, ifLoadout {
         if ( p instanceof Equipment ) {
             if ( !((Equipment)p).CanAllocCVFront() && !((Equipment)p).CanAllocCVSide() && !((Equipment)p).CanAllocCVRear() && !((Equipment)p).CanAllocCVTurret() )
                 Loc = LocationIndex.CV_LOC_BODY;
+            // Check max items allowed for that location
+            ((Equipment) p).ValidateMaxPerLocation(GetItems(Loc));
         }
 
         switch( Loc ) {
@@ -426,6 +429,8 @@ public class CVLoadout implements ifCVLoadout, ifLoadout {
         for ( abPlaceable a : (ArrayList<abPlaceable>)GetNonCore() ) {
             if ( a instanceof RangedWeapon && ((RangedWeapon)a).RequiresPowerAmps() ) {
                 total += ((RangedWeapon)a).GetHeat();
+            } else if (a instanceof Equipment && ((Equipment)a).RequiresPowerAmps()) {
+                total += ((Equipment)a).GetHeat();
             }
         }
         if ( Owner.GetArmor().IsStealth() ) total += 10;
@@ -549,23 +554,23 @@ public class CVLoadout implements ifCVLoadout, ifLoadout {
     public abPlaceable[] GetItems(int Loc) {
         switch(Loc) {
             case LocationIndex.CV_LOC_BODY:
-                return (abPlaceable[]) BodyItems.toArray();
+                return BodyItems.toArray(new abPlaceable[BodyItems.size()]);
             case LocationIndex.CV_LOC_FRONT:
-                return (abPlaceable[]) FrontItems.toArray();
+                return FrontItems.toArray(new abPlaceable[FrontItems.size()]);
             case LocationIndex.CV_LOC_LEFT:
-                return (abPlaceable[]) LeftItems.toArray();
+                return LeftItems.toArray(new abPlaceable[LeftItems.size()]);
             case LocationIndex.CV_LOC_REAR:
-                return (abPlaceable[]) RearItems.toArray();
+                return RearItems.toArray(new abPlaceable[RearItems.size()]);
             case LocationIndex.CV_LOC_RIGHT:
-                return (abPlaceable[]) RearItems.toArray();
+                return RearItems.toArray(new abPlaceable[RightItems.size()]);
             case LocationIndex.CV_LOC_TURRET1:
-                return (abPlaceable[]) Turret1Items.toArray();
+                return Turret1Items.toArray(new abPlaceable[Turret1Items.size()]);
             case LocationIndex.CV_LOC_TURRET2:
-                return (abPlaceable[]) Turret2Items.toArray();
+                return Turret2Items.toArray(new abPlaceable[Turret2Items.size()]);
             case LocationIndex.CV_LOC_SPONSON_LEFT:
-                return (abPlaceable[]) SponsonTurretLeftItems.toArray();
+                return SponsonTurretLeftItems.toArray(new abPlaceable[SponsonTurretLeftItems.size()]);
             case LocationIndex.CV_LOC_SPONSON_RIGHT:
-                return (abPlaceable[]) SponsonTurretRightItems.toArray();
+                return SponsonTurretRightItems.toArray(new abPlaceable[SponsonTurretRightItems.size()]);
         }
         return null;
     }
@@ -1054,13 +1059,21 @@ public class CVLoadout implements ifCVLoadout, ifLoadout {
                 throw new Exception( p.CritName() + " may not be mounted as it requires a fusion engine." );
             }
         }
+        if( p instanceof Equipment ) {
+            if( ((Equipment) p).RequiresNuclear() &! Owner.GetEngine().IsNuclear() ) {
+                throw new Exception( p.CritName() + " may not be mounted as it requires a nuclear engine." );
+            }
+            if( ((Equipment) p).RequiresFusion() &! Owner.GetEngine().IsFusion() ) {
+                throw new Exception( p.CritName() + " may not be mounted as it requires a fusion engine." );
+            }
+        }
         if( p instanceof ExtendedFuelTank ) {
             if( ! Owner.GetEngine().IsICE() &! Owner.GetEngine().isFuelCell() ) {
                 throw new Exception( p.CritName() + " may not be mounted on this Vehicle because the engine is incompatible." );
             }
         }
         if( p.GetExclusions() == null ) { return; }
-        String[] exclude = p.GetExclusions().GetExclusions();
+        String[] exclude = p.GetExclusions();
 
         for( int i = 0; i < exclude.length; i++ ) {
             // queue first
@@ -1206,12 +1219,14 @@ public class CVLoadout implements ifCVLoadout, ifLoadout {
     }
 
     public int NumCVAmmoSpaces() {
-        LinkedHashSet<String> set = new LinkedHashSet<>();
+        // Different types of ammo for the same weapon (index) all count as 1 space, so we just need a unique count of
+        // AmmoIndexes (https://bg.battletech.com/forums/techmanual/answered-ammunition-slots-on-combat-vehicles/)
+        LinkedHashSet<Integer> indexes = new LinkedHashSet<>();
         for (abPlaceable a: (ArrayList<abPlaceable>)GetNonCore()) {
             if (a instanceof Ammunition) {
-                set.add(a.toString());
+                indexes.add(((Ammunition) a).GetAmmoIndex());
             }
         }
-        return set.size();
+        return indexes.size();
     }
 }

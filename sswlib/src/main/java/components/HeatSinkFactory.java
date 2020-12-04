@@ -238,9 +238,9 @@ public class HeatSinkFactory {
         
         int partialWingBonus = Owner.GetMech().UsingPartialWing() ? 3 : 0;
         int extraDHSBonus = 0;
+        int radicalHeatSinkBonus = 0;
         
         ArrayList equipment = Owner.GetMech().GetLoadout().GetEquipment();
-        
         for (int i = 0; i < equipment.size(); i++){
             if (equipment.get(i) instanceof EquipmentProtoSuccWarsDoubleHeatSink){
                 extraDHSBonus += 2;
@@ -248,10 +248,12 @@ public class HeatSinkFactory {
                 extraDHSBonus += 2;
             }
         }
-        
-        totalDissipation = (NumHS * CurConfig.GetDissipation())
-                            + partialWingBonus
-                            + extraDHSBonus;
+
+        int baseDissipation = NumHS * CurConfig.GetDissipation();
+        if (Owner.HasItem("Radical Heat Sink")) {
+            radicalHeatSinkBonus = (int)Math.ceil(NumHS * 0.4);
+        }
+        totalDissipation = baseDissipation + partialWingBonus + extraDHSBonus + radicalHeatSinkBonus;
                 
         if (IsProtoDHS())
         {
@@ -260,9 +262,9 @@ public class HeatSinkFactory {
             totalDissipation = (singleHS * SHS.GetDissipation()) 
                     + ((NumHS - singleHS) * CurConfig.GetDissipation())
                     + partialWingBonus
-                    + extraDHSBonus;
+                    + extraDHSBonus
+                    + radicalHeatSinkBonus;
         }
-        
         return totalDissipation;
     }
 

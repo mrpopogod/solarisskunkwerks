@@ -20,7 +20,8 @@ application {
 jar {
     manifest.attributes (
             'Main-Class' : 'saw.Main',
-            'Class-Path' : 'lib/sswlib.jar lib/AbsoluteLayout-RELEASE110.jar lib/gson-2.8.6.jar'
+            'Class-Path' : configurations.runtimeClasspath.files
+                    .findAll { it.name.endsWith(".jar") }.collect { "lib/${it.name}" }.join(' '),
     )
     jar.archiveName = "SAW.jar"
 }
@@ -40,6 +41,12 @@ task copyAssets (dependsOn: deleteAssets) {
     }
 }
 
+task writeProperties(type: WriteProperties) {
+    outputFile "${buildDir}/resources/main/saw/build.properties"
+    property 'version', version
+    property 'release', release
+}
+
 task copyDependencies {
     copy {
         into "${buildDir}/deps"
@@ -47,13 +54,4 @@ task copyDependencies {
     }
 }
 
-//distributions {
-//    main {
-//        contents {
-//            from ('../') {
-//                include 'Data/**'
-//                into 'lib'
-//            }
-//        }
-//    }
-//}
+compileJava.finalizedBy(writeProperties)

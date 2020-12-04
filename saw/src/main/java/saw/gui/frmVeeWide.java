@@ -40,10 +40,16 @@ import components.*;
 import dialog.frmForce;
 import filehandlers.*;
 import gui.TextPane;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Image;
+import saw.filehandlers.HTMLWriter;
+import states.ifState;
+import visitors.VArmorSetPatchworkLocation;
+import visitors.VMechFullRecalc;
+import visitors.VSetArmorTonnage;
+import visitors.ifVisitor;
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
@@ -53,14 +59,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
-import saw.filehandlers.HTMLWriter;
-import states.ifState;
-import visitors.VArmorSetPatchworkLocation;
-import visitors.VMechFullRecalc;
-import visitors.VSetArmorTonnage;
-import visitors.ifVisitor;
 
 public final class frmVeeWide extends javax.swing.JFrame implements java.awt.datatransfer.ClipboardOwner, common.DesignForm, ifVeeForm {
     CombatVehicle CurVee;
@@ -155,7 +153,7 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
         cmbMotiveTypeActionPerformed(null);
         spnTonnageStateChanged(null);
 
-        setTitle( saw.Constants.AppDescription + " " + saw.Constants.Version );
+        setTitle( saw.Constants.AppDescription + " " + saw.Constants.GetVersion() );
 
         // added for easy checking
         PPCCapAC.SetISCodes( 'E', 'X', 'X', 'E', 'D' );
@@ -1056,7 +1054,6 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
         btnExportMTFIcon = new javax.swing.JButton();
         btnChatInfo = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
-        btnPostToS7 = new javax.swing.JButton();
         jSeparator25 = new javax.swing.JToolBar.Separator();
         btnAddToForceList = new javax.swing.JButton();
         btnForceList = new javax.swing.JButton();
@@ -1424,7 +1421,6 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
         jSeparator23 = new javax.swing.JSeparator();
         mnuPrint = new javax.swing.JMenu();
         mnuPrintPreview = new javax.swing.JMenuItem();
-        mnuPostS7 = new javax.swing.JMenuItem();
         jSeparator24 = new javax.swing.JSeparator();
         mnuExit = new javax.swing.JMenuItem();
         mnuClearFluff = new javax.swing.JMenu();
@@ -1612,19 +1608,6 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
         });
         tlbIconBar.add(btnChatInfo);
         tlbIconBar.add(jSeparator3);
-
-        btnPostToS7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/saw/images/server.png"))); // NOI18N
-        btnPostToS7.setToolTipText("Upload to Solaris7.com");
-        btnPostToS7.setEnabled(false);
-        btnPostToS7.setFocusable(false);
-        btnPostToS7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnPostToS7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnPostToS7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPostToS7ActionPerformed(evt);
-            }
-        });
-        tlbIconBar.add(btnPostToS7);
         tlbIconBar.add(jSeparator25);
 
         btnAddToForceList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/saw/images/clipboard--plus.png"))); // NOI18N
@@ -5002,16 +4985,6 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
             }
         });
         mnuFile.add(mnuPrintPreview);
-
-        mnuPostS7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        mnuPostS7.setText("Post to Solaris7.com");
-        mnuPostS7.setEnabled(false);
-        mnuPostS7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuPostS7ActionPerformed(evt);
-            }
-        });
-        mnuFile.add(mnuPostS7);
         mnuFile.add(jSeparator24);
 
         mnuExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_DOWN_MASK));
@@ -5541,6 +5514,12 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
 
     private void BuildChassisSelector()
     {
+        chkFlotationHull.setSelected(false);
+        chkLimitedAmph.setSelected(false);
+        chkFullAmph.setSelected(false);
+        chkDuneBuggy.setSelected(false);
+        chkEnviroSealing.setSelected(false);
+
         if ( cmbRulesLevel.getSelectedIndex() > 1 ) {
             chkFlotationHull.setEnabled(true);
             chkLimitedAmph.setEnabled(true);
@@ -5550,24 +5529,32 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
 
             if ( !CurVee.CanUseEnviroSealing() ) {
                 chkEnviroSealing.setEnabled(false);
-                chkEnviroSealing.setSelected(false);
             }
-            
             if ( !CurVee.CanUseFlotationHull() ) {
                 chkFlotationHull.setEnabled(false);
-                chkFlotationHull.setSelected(false);
             }
-
             if ( !CurVee.CanUseAmphibious() ) {
                 chkLimitedAmph.setEnabled(false);
-                chkLimitedAmph.setSelected(false);
                 chkFullAmph.setEnabled(false);
-                chkFullAmph.setSelected(false);
             }
-
             if ( !CurVee.CanBeDuneBuggy() ) {
                 chkDuneBuggy.setEnabled(false);
-                chkDuneBuggy.setSelected(false);
+            }
+
+            if (CurVee.HasEnvironmentalSealing()) {
+                chkEnviroSealing.setSelected(true);
+            }
+            if (CurVee.HasFlotationHull()) {
+                chkFlotationHull.setSelected(true);
+            }
+            if (CurVee.HasLimitedAmphibious()) {
+                chkLimitedAmph.setSelected(true);
+            }
+            if (CurVee.HasFullAmphibious()) {
+                chkFullAmph.setSelected(true);
+            }
+            if (CurVee.HasDuneBuggy()) {
+                chkDuneBuggy.setSelected(true);
             }
         } else {
             chkFlotationHull.setEnabled(false);
@@ -5839,10 +5826,6 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
         lblInfoMountRestrict.setText(lblInfoMountRestrict.getText() + " MM Name " + p.MegaMekName(false));
     }
 
-    private void btnPostToS7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPostToS7ActionPerformed
-       
-}//GEN-LAST:event_btnPostToS7ActionPerformed
-
     private void btnAddToForceListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToForceListActionPerformed
 
 }//GEN-LAST:event_btnAddToForceListActionPerformed
@@ -5903,7 +5886,7 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
         }
 
         setCursor( NormalCursor );
-        setTitle( saw.Constants.AppName + " " + saw.Constants.Version + " - " + CurVee.GetName() + " " + CurVee.GetModel() );
+        setTitle( saw.Constants.AppName + " " + saw.Constants.GetVersion() + " - " + CurVee.GetName() + " " + CurVee.GetModel() );
         CurVee.SetChanged( false );
     }//GEN-LAST:event_btnSaveActionPerformed
     private void SaveOmniFluffInfo() {
@@ -6327,7 +6310,7 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
             chkYearRestrict.setEnabled( true );
         }
         CurVee.SetChanged( false );
-        setTitle( saw.Constants.AppDescription + " " + saw.Constants.Version );
+        setTitle( saw.Constants.AppDescription + " " + saw.Constants.GetVersion() );
     }
 
     private void CheckOmni() {
@@ -7152,7 +7135,7 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
         txtCommSystem.setText( CurVee.GetCommSystem() );
         txtTNTSystem.setText( CurVee.GetTandTSystem() );
 
-        setTitle( saw.Constants.AppName + " " + saw.Constants.Version + " - " + CurVee.GetName() + " " + CurVee.GetModel() );
+        setTitle( saw.Constants.AppName + " " + saw.Constants.GetVersion() + " - " + CurVee.GetName() + " " + CurVee.GetModel() );
         CurVee.SetChanged(false);
     }
 
@@ -7306,7 +7289,7 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
         }
 
         setCursor(NormalCursor);
-        setTitle(saw.Constants.AppName + " " + saw.Constants.Version + " - " + CurVee.GetName() + " " + CurVee.GetModel());
+        setTitle(saw.Constants.AppName + " " + saw.Constants.GetVersion() + " - " + CurVee.GetName() + " " + CurVee.GetModel());
         CurVee.SetChanged(false);
     }//GEN-LAST:event_mnuSaveActionPerformed
 
@@ -7364,7 +7347,7 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
             cmbOmniVariant.setSelectedItem(CurLoadout);
             cmbOmniVariantActionPerformed(evt);
         }
-        setTitle(saw.Constants.AppName + " " + saw.Constants.Version + " - " + CurVee.GetName() + " " + CurVee.GetModel());
+        setTitle(saw.Constants.AppName + " " + saw.Constants.GetVersion() + " - " + CurVee.GetName() + " " + CurVee.GetModel());
         CurVee.SetChanged(false);
         setCursor(NormalCursor);
     }//GEN-LAST:event_mnuSaveAsActionPerformed
@@ -7428,38 +7411,6 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
     private void mnuPrintPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuPrintPreviewActionPerformed
         btnPrintActionPerformed(evt);
     }//GEN-LAST:event_mnuPrintPreviewActionPerformed
-
-    private void mnuPostS7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuPostS7ActionPerformed
-        // attempts to post the mech to Solaris7.com
-        // must do all the normal actions for HTML export, then attempt to post
-        // right now we'll just show the screen so we can see it
-        // exports the mech to HTML format
-
-        //Save any changes to the Mech before posting...
-        QuickSave();
-
-        String CurLoadout = "";
-        if (CurVee.IsOmni()) {
-            CurLoadout = CurVee.GetLoadout().GetName();
-        }
-
-        // Solidify the mech first.
-        SolidifyVehicle();
-
-        if (!VerifyVehicle(evt)) {
-            return;
-        }
-
-        dlgPostToSolaris7 PostS7 = new dlgPostToSolaris7(this, true, CurVee);
-        PostS7.setLocationRelativeTo(this);
-        PostS7.setVisible(true);
-
-        QuickSave();
-        
-        // lastly, if this is an omnimech, reset the display to the last loadout
-        cmbOmniVariant.setSelectedItem(CurLoadout);
-        cmbOmniVariantActionPerformed(evt);
-    }//GEN-LAST:event_mnuPostS7ActionPerformed
 
     public void QuickSave() {
         File saveFile = GetSaveFile( "saw", Prefs.get( "LastOpenCVDirectory", "" ), true, false );
@@ -7718,7 +7669,7 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
             cmbOmniVariant.setSelectedItem( CurLoadout );
             cmbOmniVariantActionPerformed( evt );
         }
-        setTitle( saw.Constants.AppName + " " + saw.Constants.Version + " - " + CurVee.GetName() + " " + CurVee.GetModel() );
+        setTitle( saw.Constants.AppName + " " + saw.Constants.GetVersion() + " - " + CurVee.GetName() + " " + CurVee.GetModel() );
         SetSource = true;
     }//GEN-LAST:event_btnExportHTMLIconActionPerformed
 
@@ -7767,7 +7718,7 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
 
         // if there were no problems, let the user know how it went
         Media.Messager(this, "Vehicle saved successfully to MTF:\n" + filename);
-        setTitle(saw.Constants.AppName + " " + saw.Constants.Version + " - " + CurVee.GetName() + " " + CurVee.GetModel());
+        setTitle(saw.Constants.AppName + " " + saw.Constants.GetVersion() + " - " + CurVee.GetName() + " " + CurVee.GetModel());
     }//GEN-LAST:event_btnExportMTFActionPerformed
 
     private void btnExportHTMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportHTMLActionPerformed
@@ -7804,7 +7755,7 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
             //cmbOmniVariant.setSelectedItem( CurLoadout );
             //cmbOmniVariantActionPerformed( evt );
         }
-        setTitle(saw.Constants.AppName + " " + saw.Constants.Version + " - " + CurVee.GetName() + " " + CurVee.GetModel());
+        setTitle(saw.Constants.AppName + " " + saw.Constants.GetVersion() + " - " + CurVee.GetName() + " " + CurVee.GetModel());
     }//GEN-LAST:event_btnExportHTMLActionPerformed
 
     private void btnExportTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportTXTActionPerformed
@@ -7841,7 +7792,7 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
             //cmbOmniVariant.setSelectedItem( CurLoadout );
             //cmbOmniVariantActionPerformed( evt );
         }
-        setTitle(saw.Constants.AppName + " " + saw.Constants.Version + " - " + CurVee.GetName() + " " + CurVee.GetModel());
+        setTitle(saw.Constants.AppName + " " + saw.Constants.GetVersion() + " - " + CurVee.GetName() + " " + CurVee.GetModel());
     }//GEN-LAST:event_btnExportTXTActionPerformed
 
     private void btnClearImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearImageActionPerformed
@@ -8886,6 +8837,13 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
         // currently testing right now.
         SaveOmniFluffInfo();
         String VariantName = "";
+        
+        // 2020-11-13 Omnis can't have Hardened Armor, but we wrote this generic
+        // in case later other armor types come along
+        if (!CurVee.GetArmor().AllowOmni()){
+            Media.Messager( this, "Omnivees are not allowed to have " + CurVee.GetArmor().ActualName());
+            return;
+        }
 
         int choice = javax.swing.JOptionPane.showConfirmDialog(this,
                 "Are you sure you want to lock the chassis?\nAll items in the base "
@@ -9910,7 +9868,6 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
     private javax.swing.JButton btnNewVee;
     private javax.swing.JButton btnOpen;
     private javax.swing.JButton btnOptions;
-    private javax.swing.JButton btnPostToS7;
     private javax.swing.JButton btnPrint;
     private javax.swing.JButton btnRemoveEquip;
     private javax.swing.JButton btnRenameVariant;
@@ -10179,7 +10136,6 @@ public final class frmVeeWide extends javax.swing.JFrame implements java.awt.dat
     private javax.swing.JMenuItem mnuNewMech;
     private javax.swing.JMenuItem mnuOpen;
     private javax.swing.JMenuItem mnuOptions;
-    private javax.swing.JMenuItem mnuPostS7;
     private javax.swing.JMenu mnuPrint;
     private javax.swing.JMenuItem mnuPrintPreview;
     private javax.swing.JMenuItem mnuReloadEquipment;

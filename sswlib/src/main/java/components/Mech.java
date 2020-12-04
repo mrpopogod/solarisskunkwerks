@@ -33,9 +33,7 @@ import common.CommonTools;
 import common.Constants;
 import visitors.*;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.*;
 import java.util.prefs.Preferences;
 
 public class Mech implements ifUnit, ifBattleforce {
@@ -177,7 +175,7 @@ public class Mech implements ifUnit, ifBattleforce {
         AC.SetRulesLevels( AvailableCode.RULES_EXPERIMENTAL, AvailableCode.RULES_UNALLOWED, AvailableCode.RULES_UNALLOWED, AvailableCode.RULES_UNALLOWED, AvailableCode.RULES_UNALLOWED );
         NullSig = new MultiSlotSystem( this, "Null Signature System", "Null Signature System", "Null Signature System", "NullSignatureSystem", 0.0, false, true, 1400000.0, false, AC );
         NullSig.AddMechModifier( new MechModifier( 0, 0, 0, 0.0, 0, 0, 10, 0.2, 0.0, 0.0, 0.0, true, false ) );
-        NullSig.SetExclusions( new Exclusion( new String[] { "Targeting Computer", "Void Signature System", "Stealth Armor", "C3" }, "Null Signature System" ) );
+        NullSig.SetExclusions(new String[] { "Targeting Computer", "Void Signature System", "Stealth Armor", "C3" });
         NullSig.SetBookReference( "Tactical Operations" );
         NullSig.SetChatName( "NullSig" );
 
@@ -190,7 +188,7 @@ public class Mech implements ifUnit, ifBattleforce {
         AC.SetRulesLevels( AvailableCode.RULES_EXPERIMENTAL, AvailableCode.RULES_UNALLOWED, AvailableCode.RULES_UNALLOWED, AvailableCode.RULES_UNALLOWED, AvailableCode.RULES_UNALLOWED );
         Chameleon = new MultiSlotSystem( this, "Chameleon LPS", "Chameleon LPS", "Chameleon LPS", "ChameleonLightPolarizationField", 0.0, true, true, 600000.0, false, AC );
         Chameleon.AddMechModifier( new MechModifier( 0, 0, 0, 0.0, 0, 0, 6, 0.2, 0.0, 0.0, 0.0, true, false ) );
-        Chameleon.SetExclusions( new Exclusion( new String[] { "Void Signature System", "Stealth Armor" }, "Chameleon LPS" ) );
+        Chameleon.SetExclusions(new String[] { "Void Signature System", "Stealth Armor" });
         Chameleon.SetBookReference( "Tactical Operations" );
         Chameleon.SetChatName( "CLPS" );
 
@@ -215,7 +213,7 @@ public class Mech implements ifUnit, ifBattleforce {
         AC.SetRulesLevels( AvailableCode.RULES_EXPERIMENTAL, AvailableCode.RULES_UNALLOWED, AvailableCode.RULES_UNALLOWED, AvailableCode.RULES_UNALLOWED, AvailableCode.RULES_UNALLOWED );
         VoidSig = new MultiSlotSystem( this, "Void Signature System", "Void Signature System", "Void Signature System", "VoidSignatureSystem", 0.0, false, true, 2000000.0, false, AC );
         VoidSig.AddMechModifier( new MechModifier( 0, 0, 0, 0.0, 0, 0, 10, 0.3, 0.0, 0.0, 0.0, true, false ) );
-        VoidSig.SetExclusions( new Exclusion( new String[] { "Targeting Computer", "Null Signature System", "Stealth Armor", "C3", "Chameleon LPS" }, "Void Signature System" ) );
+        VoidSig.SetExclusions(new String[] { "Targeting Computer", "Null Signature System", "Stealth Armor", "C3", "Chameleon LPS" });
         VoidSig.SetBookReference( "Tactical Operations" );
         VoidSig.SetChatName( "VoidSig" );
 
@@ -916,7 +914,9 @@ public class Mech implements ifUnit, ifBattleforce {
             if( p instanceof PhysicalWeapon ) {
                 CurLoadout.Remove(p);
             } else if( p instanceof Equipment ) {
-                if( ! ((Equipment) p).Validate( this ) ) {
+                try {
+                    ((Equipment) p).Validate( this);
+                } catch (Exception e) {
                     CurLoadout.Remove( p );
                 }
             }
@@ -1103,8 +1103,10 @@ public class Mech implements ifUnit, ifBattleforce {
             if( p instanceof PhysicalWeapon ) {
                 CurLoadout.Remove(p);
             } else if( p instanceof Equipment ) {
-                if( ! ((Equipment) p).Validate( this ) ) {
-                    CurLoadout.Remove( p );
+                try {
+                    ((Equipment) p).Validate( this);
+                } catch (Exception e) {
+                    CurLoadout.Remove(p);
                 }
             }
         }
@@ -1298,8 +1300,10 @@ public class Mech implements ifUnit, ifBattleforce {
             if( p instanceof PhysicalWeapon ) {
                 CurLoadout.Remove(p);
             } else if( p instanceof Equipment ) {
-                if( ! ((Equipment) p).Validate( this ) ) {
-                    CurLoadout.Remove( p );
+                try {
+                    ((Equipment) p).Validate(this);
+                } catch (Exception e) {
+                    CurLoadout.Remove(p);
                 }
             }
         }
@@ -2455,6 +2459,15 @@ public class Mech implements ifUnit, ifBattleforce {
             if( CurLoadout.HasSupercharger() ) {
                 result += CurLoadout.GetSupercharger().GetDefensiveBV();
             }
+            if( CurLoadout.HasLTTurret()){
+                result += CurLoadout.GetLTTurret().GetDefensiveBV();
+            }
+            if( CurLoadout.HasRTTurret()){
+                result += CurLoadout.GetRTTurret().GetDefensiveBV();
+            }
+            if( CurLoadout.HasHDTurret()){
+                result += CurLoadout.GetHDTurret().GetDefensiveBV();
+            }
         }
         return result;
     }
@@ -2530,99 +2543,104 @@ public class Mech implements ifUnit, ifBattleforce {
 
         for( int i = 0; i < v.size(); i++ ) {
             p = (abPlaceable) v.get( i );
-            if( p instanceof Ammunition ) {
-                if( ((Ammunition) p).IsExplosive() ) {
-                    if( CurEngine.IsISXL() ) {
-                        switch( CurLoadout.Find( p ) ) {
-                            case 0:
-                                if( ! CurLoadout.HasHDCASEII() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 1:
-                                if( ! CurLoadout.HasCTCASEII() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 2:
-                                if( ! CurLoadout.HasLTCASEII() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 3:
-                                if( ! CurLoadout.HasRTCASEII() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 4:
-                                if( ! CurLoadout.HasLACASEII() &! CurLoadout.HasLTCASEII() &! CurLoadout.IsUsingClanCASE() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 5:
-                                if( ! CurLoadout.HasRACASEII() &! CurLoadout.HasRTCASEII() &! CurLoadout.IsUsingClanCASE() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 6:
-                                if( ! CurLoadout.HasLLCASEII() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 7:
-                                if( ! CurLoadout.HasRLCASEII() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                        }
-                    } else {
-                        switch( CurLoadout.Find( p ) ) {
-                            case 0:
-                                if( ! CurLoadout.HasHDCASEII() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 1:
-                                if( ! CurLoadout.HasCTCASEII() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 2:
-                                if( ! CurLoadout.HasLTCASEII() &! CurLoadout.HasLTCASE() &! CurLoadout.IsUsingClanCASE() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 3:
-                                if( ! CurLoadout.HasRTCASEII() &! CurLoadout.HasRTCASE() &! CurLoadout.IsUsingClanCASE() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 4:
-                                if( ! CurLoadout.HasLACASEII() &! CurLoadout.HasLTCASEII() &! CurLoadout.HasLTCASE() &! CurLoadout.IsUsingClanCASE() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 5:
-                                if( ! CurLoadout.HasRACASEII() &! CurLoadout.HasRTCASEII() &! CurLoadout.HasRTCASE() &! CurLoadout.IsUsingClanCASE() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 6:
-                                if( ! CurLoadout.HasLLCASEII() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                            case 7:
-                                if( ! CurLoadout.HasRLCASEII() ) {
-                                    result -= 15.0;
-                                }
-                                break;
-                        }
+            // Extended Fuel Tanks are to be treated just like explosive ammunition for BV calculation purposes
+            // https://bg.battletech.com/forums/index.php?topic=67275.0
+            if((p instanceof Ammunition && ((Ammunition)p).IsExplosive()) || p instanceof ExtendedFuelTank) {
+                if( CurEngine.IsISXL() ) {
+                    switch( CurLoadout.Find( p ) ) {
+                        case 0:
+                            if( ! CurLoadout.HasHDCASEII() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 1:
+                            if( ! CurLoadout.HasCTCASEII() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 2:
+                            if( ! CurLoadout.HasLTCASEII() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 3:
+                            if( ! CurLoadout.HasRTCASEII() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 4:
+                            if (CurLoadout instanceof QuadLoadout && (! CurLoadout.HasLACASEII() )){
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            else if( ! CurLoadout.HasLACASEII() &! CurLoadout.HasLTCASEII() &! CurLoadout.IsUsingClanCASE() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 5:
+                            if (CurLoadout instanceof QuadLoadout && (! CurLoadout.HasRACASEII() )){
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            else if( ! CurLoadout.HasRACASEII() &! CurLoadout.HasRTCASEII() &! CurLoadout.IsUsingClanCASE() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 6:
+                            if( ! CurLoadout.HasLLCASEII() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 7:
+                            if( ! CurLoadout.HasRLCASEII() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                    }
+                } else {
+                    switch( CurLoadout.Find( p ) ) {
+                        case 0:
+                            if( ! CurLoadout.HasHDCASEII() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 1:
+                            if( ! CurLoadout.HasCTCASEII() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 2:
+                            if( ! CurLoadout.HasLTCASEII() &! CurLoadout.HasLTCASE() &! CurLoadout.IsUsingClanCASE() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 3:
+                            if( ! CurLoadout.HasRTCASEII() &! CurLoadout.HasRTCASE() &! CurLoadout.IsUsingClanCASE() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 4:
+                            if( ! CurLoadout.HasLACASEII() &! CurLoadout.HasLTCASEII() &! CurLoadout.HasLTCASE() &! CurLoadout.IsUsingClanCASE() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 5:
+                            if( ! CurLoadout.HasRACASEII() &! CurLoadout.HasRTCASEII() &! CurLoadout.HasRTCASE() &! CurLoadout.IsUsingClanCASE() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 6:
+                            if( ! CurLoadout.HasLLCASEII() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
+                        case 7:
+                            if( ! CurLoadout.HasRLCASEII() ) {
+                                result -= 15.0 * p.NumCrits();
+                            }
+                            break;
                     }
                 }
             }
         }
-
         return result;
     }
 
@@ -2752,7 +2770,7 @@ public class Mech implements ifUnit, ifBattleforce {
                 }
             }
             if( p instanceof Equipment ) { Explode = ((Equipment) p).IsExplosive(); }
-            if( Explode ) {
+            if( Explode && !(p instanceof ExtendedFuelTank)) {
                 if( CurEngine.IsISXL() ) {
                     switch( CurLoadout.Find( p ) ) {
                         case 0:
@@ -3005,7 +3023,10 @@ public class Mech implements ifUnit, ifBattleforce {
             a = ((abPlaceable) wep.get( i ));
             // arm mounted weapons always count their full BV, so ignore them.
             int loc = CurLoadout.Find( a );
-            if( loc != LocationIndex.MECH_LOC_LA && loc != LocationIndex.MECH_LOC_RA ) {
+            // 2020-10-10 Turreted are also always their full BV
+            if( loc != LocationIndex.MECH_LOC_LA 
+                && loc != LocationIndex.MECH_LOC_RA 
+                && (a instanceof RangedWeapon && !((RangedWeapon)a).IsTurreted()) ) {
                 UseAESMod = UseAESModifier( a );
                 if( a.IsMountedRear() ) {
                     rearBV += a.GetCurOffensiveBV( true, TC, UseAESMod, UseRobotic );
@@ -3081,9 +3102,6 @@ public class Mech implements ifUnit, ifBattleforce {
 
         for( int i = 0; i < v.size(); i++ ) {
             if( ! ( v.get( i ) instanceof ifWeapon ) ) {
-                if ( v.get(i) instanceof Equipment )
-                    if ( ((Equipment)v.get(i)).LookupName().equals( "Radical Heat Sink" )) 
-                        result += CommonTools.RoundFullUp(GetHeatSinks().GetNumHS() * 1.4);
                 result += ((abPlaceable) v.get( i )).GetOffensiveBV();
             }
         }
@@ -4570,7 +4588,18 @@ public class Mech implements ifUnit, ifBattleforce {
             // get the two items we'll be comparing
             boolean AES1 = UseAESModifier( ((abPlaceable) v.get( i - 1 )) );
             boolean AES2 = UseAESModifier( ((abPlaceable) v.get( i )) );
-            if( ((abPlaceable) v.get( i - 1 )).GetCurOffensiveBV( rear, TC, AES1 ) >= ((abPlaceable) v.get( i )).GetCurOffensiveBV( rear, TC, AES2 ) ) {
+            /***
+             * 2020-10-06:
+             * This should be improved but the problem is it needs to be sorted by BV,
+             * then by heat, lowest to highest.  To that end we just get the heat and
+             * compare them as a second step if the BV is the same.  If the BV is higher
+             * then we don't need to look.
+             */
+            double offensiveBV1 = ((abPlaceable) v.get( i - 1 )).GetCurOffensiveBV( rear, TC, AES1 );
+            double offensiveBV2 = ((abPlaceable) v.get( i )).GetCurOffensiveBV( rear, TC, AES2 );
+            double heat1 = ((ifWeapon) v.get( i - 1 )).GetHeat();
+            double heat2 = ((ifWeapon) v.get( i )).GetHeat();
+            if( offensiveBV1 > offensiveBV2 || ( offensiveBV1 == offensiveBV2 && heat1 <= heat2 ) ) {
                 i = j;
                 j += 1;
             } else {
@@ -4591,13 +4620,15 @@ public class Mech implements ifUnit, ifBattleforce {
             while( i < v.size() ) {
                 boolean AES1 = UseAESModifier( ((abPlaceable) v.get( i - 1 )) );
                 boolean AES2 = UseAESModifier( ((abPlaceable) v.get( i )) );
+                double heat1 = ((ifWeapon) v.get( i - 1 )).GetHeat();
+                double heat2 = ((ifWeapon) v.get( i )).GetHeat();
                 if( ((abPlaceable) v.get( i - 1 )).GetCurOffensiveBV( rear, TC, AES1 ) == ((abPlaceable) v.get( i )).GetCurOffensiveBV( rear, TC, AES2 ) ) {
                     if( rear ) {
                         if( ((abPlaceable) v.get( i - 1 )).IsMountedRear() &! ((abPlaceable) v.get( i )).IsMountedRear() ) {
                             swap = v.get( i - 1 );
                             v.set( i - 1, v.get( i ) );
                             v.set( i, swap );
-                        } else if( ((ifWeapon) v.get( i - 1)).GetHeat() > ((ifWeapon) v.get( i )).GetHeat() ) {
+                        } else if( heat1 > heat2 ) {
                             swap = v.get( i - 1 );
                             v.set( i - 1, v.get( i ) );
                             v.set( i, swap );
@@ -4607,7 +4638,7 @@ public class Mech implements ifUnit, ifBattleforce {
                             swap = v.get( i - 1 );
                             v.set( i - 1, v.get( i ) );
                             v.set( i, swap );
-                        } else if( ((ifWeapon) v.get( i - 1)).GetHeat() > ((ifWeapon) v.get( i )).GetHeat() ) {
+                        } else if( heat1 > heat2 ) {
                             swap = v.get( i - 1 );
                             v.set( i - 1, v.get( i ) );
                             v.set( i, swap );
@@ -4615,6 +4646,49 @@ public class Mech implements ifUnit, ifBattleforce {
                     }
                 }
                 i++;
+            }
+        }
+
+        return v;
+    }
+
+    /**
+     * Sorting routine for weapon Printing.
+     * @param v
+     * @return 
+     */
+    
+    public ArrayList SortWeaponsToPrint( ArrayList v ) {
+        /***
+        * 2020-10-10:
+        * When we fixed the BV calculations sort (see 10-06 note above) it broke
+        * print preview with the way it was sorted.  It's weird, but the quick fix
+        * that lets me work on something else and still fix the issue while keeping
+        * old behavior as it was is to copy the old function as it was when called by
+        * the Print routine.
+        */
+        
+        int i = 1, j = 2;
+        boolean TC = UsingTC();
+        Object swap;
+        while( i < v.size() ) {
+            // get the two items we'll be comparing
+            boolean AES1 = UseAESModifier( ((abPlaceable) v.get( i - 1 )) );
+            boolean AES2 = UseAESModifier( ((abPlaceable) v.get( i )) );
+
+            double offensiveBV1 = ((abPlaceable) v.get( i - 1 )).GetCurOffensiveBV( false, TC, AES1 );
+            double offensiveBV2 = ((abPlaceable) v.get( i )).GetCurOffensiveBV( false, TC, AES2 );
+            if( offensiveBV1 >= offensiveBV2 ) {
+                i = j;
+                j += 1;
+            } else {
+                swap = v.get( i - 1 );
+                v.set( i - 1, v.get( i ) );
+                v.set( i, swap );
+                i -= 1;
+                if( i == 0 ) {
+                    i = 1;
+                }
             }
         }
 
@@ -5367,6 +5441,23 @@ public class Mech implements ifUnit, ifBattleforce {
         retval.remove("IF");
         retval.remove("FLK");
 
+        // Deal with HarJel
+        if (retval.contains("BHJ")) {
+            if (!ValidateBFHarjel("BHJ")) {
+                retval.removeIf(s -> s.equals("BHJ"));
+            }
+        }
+        if (retval.contains("BHJ2")) {
+            if (!ValidateBFHarjel("BHJ2")) {
+                retval.removeIf(s -> s.equals("BHJ2"));
+            }
+        }
+        if (retval.contains("BHJ3")) {
+            if (!ValidateBFHarjel("BHJ3")) {
+                retval.removeIf(s -> s.equals("BHJ3"));
+            }
+        }
+
         //ALL Mechs get SRCH (Industrials?)
         retval.add("SRCH");     //Searchlight
         if ( CurEngine.IsICE() || CurEngine.isFuelCell() ) {
@@ -5390,6 +5481,36 @@ public class Mech implements ifUnit, ifBattleforce {
 
         return retval;
     }
+
+    private boolean ValidateBFHarjel(String ability) {
+        List<LocationIndex> locs;
+        switch (ability) {
+            case "BHJ":
+                locs = CurLoadout.FindIndexesByName("HarJel");
+                break;
+            case "BHJ2":
+                locs = CurLoadout.FindIndexesByName("HarJel II");
+                break;
+            case "BHJ3":
+                locs = CurLoadout.FindIndexesByName("HarJel III");
+                break;
+            default:
+                locs = new ArrayList<>();
+        }
+            boolean ct, lt, rt;
+            ct = lt = rt = false;
+            for (LocationIndex loc : locs) {
+                if (loc.Location == LocationIndex.MECH_LOC_CT) {
+                    ct = true;
+                } else if (loc.Location == LocationIndex.MECH_LOC_LT) {
+                    lt = true;
+                } else if (loc.Location == LocationIndex.MECH_LOC_RT) {
+                    rt = true;
+                }
+            }
+            return ct && lt && rt;
+        }
+
 
     public String GetBFConversionStr( ) {
         String retval = "Weapon\t\t\tShort\tMedium\tLong\n\r";

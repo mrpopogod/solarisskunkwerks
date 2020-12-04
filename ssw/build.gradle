@@ -20,7 +20,8 @@ application {
 jar {
     manifest.attributes (
             'Main-Class' : 'ssw.Main',
-            'Class-Path' : 'lib/sswlib.jar lib/AbsoluteLayout-RELEASE110.jar lib/gson-2.8.6.jar',
+            'Class-Path' : configurations.runtimeClasspath.files
+                    .findAll { it.name.endsWith(".jar") }.collect { "lib/${it.name}" }.join(' '),
             'SplashScreen-Image' : 'ssw/Images/splash.png'
     )
     archiveName = "SSW.jar"
@@ -41,6 +42,12 @@ task copyAssets (dependsOn: deleteAssets) {
     }
 }
 
+task writeProperties(type: WriteProperties) {
+    outputFile "${buildDir}/resources/main/ssw/build.properties"
+    property 'version', version
+    property 'release', release
+}
+
 task copyDependencies {
     copy {
         into "${buildDir}/deps"
@@ -48,3 +55,4 @@ task copyDependencies {
     }
 }
 
+compileJava.finalizedBy(writeProperties)

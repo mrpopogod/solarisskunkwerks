@@ -50,7 +50,8 @@ public class Equipment extends abPlaceable {
                 MedRange = 0,
                 LngRange = 0,
                 Heat = 0,
-                MaxAllowed = 0;
+                MaxAllowed = 0,
+                MaxAllowedPerLocation = 0;
     private double Tonnage = 0.0,
                   Cost = 0.0,
                   OffBV = 0.0,
@@ -75,7 +76,10 @@ public class Equipment extends abPlaceable {
                     CanMountRear = false,
                     Explosive = false,
                     VariableSize = false,
-                    RequiresQuad = false;
+                    RequiresQuad = false,
+                    RequiresFusion = false,
+                    RequiresNuclear = false,
+                    RequiresPowerAmps = false;
     private transient boolean Rear = false;
     @SerializedName("Availability") private AvailableCode AC;
 
@@ -138,7 +142,11 @@ public class Equipment extends abPlaceable {
         ChatName = e.ChatName;
         Manufacturer = e.Manufacturer;
         RequiresQuad = e.RequiresQuad;
+        RequiresFusion = e.RequiresFusion;
+        RequiresNuclear = e.RequiresNuclear;
+        RequiresPowerAmps = e.RequiresPowerAmps;
         MaxAllowed = e.MaxAllowed;
+        MaxAllowedPerLocation = e.MaxAllowedPerLocation;
         SetBattleForceAbilities( e.GetBattleForceAbilities() );
         SetExclusions( e.GetExclusions() );
     }
@@ -330,7 +338,7 @@ public class Equipment extends abPlaceable {
             //If the total BV is 0 lets just calculate based on the number of armored crits.
             if ( (OffBV + DefBV) == 0 ) return NumCrits() * 5.0;
             //Not sure why this line is like this but had to add the line aboves
-            return (( OffBV + DefBV ) * 0.5 * NumCrits() ) + DefBV;
+            return ( ( OffBV + DefBV ) * 0.05 * (double)NumCrits() ) + DefBV;
         }
         return DefBV;
     }
@@ -461,8 +469,24 @@ public class Equipment extends abPlaceable {
         return RequiresQuad;
     }
 
+    public boolean RequiresFusion() {
+        return RequiresFusion;
+    }
+
+    public boolean RequiresNuclear() {
+        return RequiresNuclear;
+    }
+
+    public boolean RequiresPowerAmps() {
+        return RequiresPowerAmps;
+    }
+
     public int MaxAllowed() {
         return MaxAllowed;
+    }
+
+    public int MaxAllowedPerLocation() {
+        return MaxAllowedPerLocation;
     }
 
     public boolean IsVariableSize() {
@@ -498,23 +522,24 @@ public class Equipment extends abPlaceable {
         Tonnage = d;
     }
 
-    public boolean Validate( Mech m ) {
+    public void Validate( Mech m ) throws Exception {
+        if(!m.IsQuad() && RequiresQuad) {
+            throw new Exception(CritName() + " may only be mounted on a quad 'Mech.");
+        }
         if( MaxAllowed > 0 ) {
             ArrayList currentEquipment = m.GetLoadout().GetEquipment();
-            for( int i = 0, c = 0; i < currentEquipment.size(); ++i ) {
-                abPlaceable currentItem = (abPlaceable) currentEquipment.get( i );
-                if( currentItem.LookupName().equals( LookupName ) ) {
+            for (int i = 0, c = 0; i < currentEquipment.size(); ++i) {
+                abPlaceable currentItem = (abPlaceable) currentEquipment.get(i);
+                if (currentItem.LookupName().equals(LookupName)) {
                     ++c;
-                    if( c == MaxAllowed ) {
-                        return false;
+                    if (c == MaxAllowed) {
+                        throw new Exception("Only " + MaxAllowed + " " + CritName + "(s) may be mounted on one 'Mech.");
                     }
                 }
             }
-            return true;
-        } else if( RequiresQuad ) {
-            return m.IsQuad();
-        } else {
-            return true;
+        }
+        if (LookupName().contains("HarJel") && m.IsOmnimech() && m.GetLoadout() != m.GetBaseLoadout()) {
+            throw new Exception(LookupName() + " can only be added to the base chassis on Omnimechs.");
         }
     }
 
@@ -536,6 +561,19 @@ public class Equipment extends abPlaceable {
             return false;
         } else {
             return true;
+        }
+    }
+
+    public void ValidateMaxPerLocation(abPlaceable[] location ) throws Exception {
+        if (MaxAllowedPerLocation == 0) { return; }
+        int slots = 0;
+        for (abPlaceable item : location) {
+            if (item instanceof Equipment && item.LookupName().equals(LookupName)) {
+                slots++;
+            }
+        }
+        if (slots / NumCrits() >= MaxAllowedPerLocation) {
+            throw new Exception("Only " + MaxAllowedPerLocation + " " + CritName + " can be mounted in each location.");
         }
     }
 

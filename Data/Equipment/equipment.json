@@ -606,6 +606,9 @@
     "Explosive": false,
     "VariableSize": false,
     "RequiresQuad": false,
+	"RequiresFusion": false,
+    "RequiresNuclear": false,
+    "RequiresPowerAmps": true,
     "Availability": {
       "IS_SL": "X",
       "IS_SW": "X",
@@ -700,6 +703,9 @@
     "Explosive": false,
     "VariableSize": false,
     "RequiresQuad": false,
+	"RequiresFusion": false,
+    "RequiresNuclear": false,
+    "RequiresPowerAmps": true,
     "Availability": {
       "IS_SL": "X",
       "IS_SW": "X",
@@ -794,6 +800,9 @@
     "Explosive": false,
     "VariableSize": false,
     "RequiresQuad": false,
+	"RequiresFusion": false,
+    "RequiresNuclear": false,
+    "RequiresPowerAmps": true,
     "Availability": {
       "IS_SL": "E",
       "IS_SW": "F",
@@ -831,6 +840,104 @@
       "CL_PrototypeFaction": "--",
       "IS_WentExtinct": true,
       "IS_ReIntroduced": true,
+      "IS_IsPrototype": false,
+      "CL_WentExtinct": false,
+      "CL_ReIntroduced": false,
+      "CL_IsPrototype": false,
+      "PBMAllowed": true,
+      "PIMAllowed": true,
+      "PrimitiveOnly": false,
+      "SuperHeavyCompatible": true,
+      "SuperHeavyOnly": false
+    },
+    "BattleForceAbilities": [
+      "PRB",
+      "RCN"
+    ]
+  },
+  "Prototype Beagle Active Probe": {
+    "ActualName": "Prototype Beagle Active Probe",
+    "CritName": "Prototype BAP",
+    "Type": "E",
+    "LookupName": "Prototype Beagle Active Probe",
+    "MegaMekName": "BeagleActiveProbePrototype",
+    "BookReference": "Interstellar Operations",
+    "ChatName": "BAP-P",
+    "Specials": "-",
+    "Crits": 3,
+    "CVSpace": 1,
+    "LotSize": 0,
+    "AmmoIndex": 0,
+    "ShtRange": 0,
+    "MedRange": 0,
+    "LngRange": 4,
+    "Heat": 0,
+    "MaxAllowed": 0,
+    "Tonnage": 2,
+    "Cost": 600000.0,
+    "OffBV": 0.0,
+    "DefBV": 10.0,
+    "MinTons": 0.0,
+    "MaxTons": 0.0,
+    "VariableIncrement": 0.0,
+    "TonsPerCrit": 0.0,
+    "CostPerTon": 0.0,
+    "HasAmmo": false,
+    "alloc_head": true,
+    "alloc_ct": true,
+    "alloc_torsos": true,
+    "alloc_arms": true,
+    "alloc_legs": true,
+    "alloc_front": true,
+    "alloc_sides": true,
+    "alloc_rear": true,
+    "alloc_turret": true,
+    "alloc_body": true,
+    "CanSplit": false,
+    "CanMountRear": true,
+    "Explosive": false,
+    "VariableSize": false,
+    "RequiresQuad": false,
+	"RequiresFusion": false,
+    "RequiresNuclear": false,
+    "RequiresPowerAmps": true,
+    "Availability": {
+      "IS_SL": "F",
+      "IS_SW": "X",
+      "IS_CI": "X",
+      "IS_DA": "X",
+      "IS_TechRating": "E",
+      "CL_SL": "X",
+      "CL_SW": "X",
+      "CL_CI": "X",
+      "CL_DA": "X",
+      "CL_TechRating": "X",
+      "IS_RandDStartDate": 0,
+      "IS_PrototypeDate": 0,
+      "IS_IntroDate": 2560,
+      "IS_ExtinctDate": 2576,
+      "IS_ReIntroDate": 0,
+      "CL_RandDStartDate": 0,
+      "CL_PrototypeDate": 0,
+      "CL_IntroDate": 0,
+      "CL_ExtinctDate": 0,
+      "CL_ReIntroDate": 0,
+      "RulesLevelBM": 3,
+      "RulesLevelIM": 3,
+      "RulesLevelCV": 3,
+      "RulesLevelAF": -1,
+      "RulesLevelCF": -1,
+      "TechBase": 0,
+      "IS_IntroFaction": "TH",
+      "IS_ReIntroFaction": "--",
+      "IS_RandDFaction": "--",
+      "IS_PrototypeFaction": "--",
+      "CL_IntroFaction": "--",
+      "CL_ReIntroFaction": "--",
+      "CL_RandDFaction": "--",
+      "CL_PrototypeFaction": "--",
+      "IS_WentExtinct": true,
+      "IS_ReIntroduced": false,
       "IS_IsPrototype": false,
       "CL_WentExtinct": false,
       "CL_ReIntroduced": false,
@@ -1225,14 +1332,11 @@
       "C3M",
       "TAG"
     ],
-    "Exclusions": {
-      "Exclusions": [
-        "Improved C3 Computer",
-        "Null Signature System",
-        "Void Signature System"
-      ],
-      "Excluder": "C3 Computer (Master)"
-    }
+    "Exclusions": [
+      "Improved C3 Computer",
+      "Null Signature System",
+      "Void Signature System"
+    ]
   },
   "C3 Computer (Slave)": {
     "ActualName": "Command/Control/Communication Computer (Slave)",
@@ -1327,14 +1431,11 @@
     "BattleForceAbilities": [
       "C3S"
     ],
-    "Exclusions": {
-      "Exclusions": [
-        "Improved C3 Computer",
-        "Null Signature System",
-        "Void Signature System"
-      ],
-      "Excluder": "C3 Computer (Slave)"
-    }
+    "Exclusions": [
+      "Improved C3 Computer",
+      "Null Signature System",
+      "Void Signature System"
+    ]
   },
   "Improved C3 Computer": {
     "ActualName": "Improved Command/Control/Communication Computer",
@@ -1429,15 +1530,15 @@
     "BattleForceAbilities": [
       "C3I"
     ],
-    "Exclusions": {
-      "Exclusions": [
-        "C3 Computer (Master)",
-        "C3 Computer (Slave)",
-        "Null Signature System",
-        "Void Signature System"
-      ],
-      "Excluder": "Improved C3 Computer"
-    }
+    "Exclusions": [
+      "C3 Computer (Master)",
+      "C3 Computer (Slave)",
+	  "C3 Boosted Computer (Master)",
+	  "C3 Boosted Computer (Slave)",
+	  "C3 Emergency Master",
+      "Null Signature System",
+      "Void Signature System"
+    ]
   },
   "C3 Boosted Computer (Master)": {
     "ActualName": "Command/Control/Communication Boosted Computer (Master)",
@@ -1533,14 +1634,11 @@
       "C3BSM",
       "TAG"
     ],
-    "Exclusions": {
-      "Exclusions": [
-        "Improved C3 Computer",
-        "Null Signature System",
-        "Void Signature System"
-      ],
-      "Excluder": "C3 Boosted Computer (Master)"
-    }
+    "Exclusions": [
+      "Improved C3 Computer",
+      "Null Signature System",
+      "Void Signature System"
+    ]
   },
   "C3 Boosted Computer (Slave)": {
     "ActualName": "Command/Control/Communication Boosted Computer (Slave)",
@@ -1635,14 +1733,11 @@
     "BattleForceAbilities": [
       "C3BSS"
     ],
-    "Exclusions": {
-      "Exclusions": [
-        "Improved C3 Computer",
-        "Null Signature System",
-        "Void Signature System"
-      ],
-      "Excluder": "C3 Boosted Computer (Slave)"
-    }
+    "Exclusions": [
+      "Improved C3 Computer",
+      "Null Signature System",
+      "Void Signature System"
+    ]
   },
   "C3 Emergency Master": {
     "ActualName": "Command/Control/Communication Emergency Master",
@@ -1651,7 +1746,7 @@
     "LookupName": "C3 Emergency Master",
     "MegaMekName": "ISEC3MasterComputer",
     "BookReference": "Tactical Operations",
-    "ChatName": "EC3M",
+    "ChatName": "C3EM",
     "Specials": "T",
     "Crits": 2,
     "CVSpace": 1,
@@ -1737,14 +1832,11 @@
     "BattleForceAbilities": [
       "C3EM"
     ],
-    "Exclusions": {
-      "Exclusions": [
-        "Improved C3 Computer",
-        "Null Signature System",
-        "Void Signature System"
-      ],
-      "Excluder": "C3 Emergency Master"
-    }
+    "Exclusions": [
+      "Improved C3 Computer",
+      "Null Signature System",
+      "Void Signature System"
+    ]
   },
   "C3 Remote Sensor Launcher": {
     "ActualName": "Command/Control/Communication Remote Sensor Launcher",
@@ -2215,12 +2307,9 @@
     "BattleForceAbilities": [
       "-"
     ],
-    "Exclusions": {
-      "Exclusions": [
-        "Radical Heat Sink"
-      ],
-      "Excluder": "Coolant Pod"
-    }
+    "Exclusions": [
+      "Radical Heat Sink"
+    ]
   },
   "Electronic Warfare Equipment": {
     "ActualName": "Electronic Warfare Equipment",
@@ -2313,7 +2402,7 @@
       "SuperHeavyOnly": false
     },
     "BattleForceAbilities": [
-      "-"
+      "ECM"
     ]
   },
   "Ground Mobile HPG": {
@@ -2321,7 +2410,7 @@
     "CritName": "Ground Mobile HPG",
     "Type": "PE",
     "LookupName": "Ground Mobile HPG",
-    "MegaMekName": "GroundMobileHPG",
+    "MegaMekName": "ISMobileHPG",
     "BookReference": "Tactical Operations",
     "ChatName": "HPG",
     "Specials": "-",
@@ -2351,7 +2440,7 @@
     "alloc_legs": false,
     "alloc_front": true,
     "alloc_sides": true,
-    "alloc_rear": false,
+    "alloc_rear": true,
     "alloc_turret": true,
     "alloc_body": true,
     "CanSplit": true,
@@ -2359,6 +2448,9 @@
     "Explosive": false,
     "VariableSize": false,
     "RequiresQuad": false,
+	"RequiresFusion": true,
+    "RequiresNuclear": false,
+    "RequiresPowerAmps": true,
     "Availability": {
       "IS_SL": "F",
       "IS_SW": "X",
@@ -2382,7 +2474,7 @@
       "CL_ReIntroDate": 0,
       "RulesLevelBM": 2,
       "RulesLevelIM": 2,
-      "RulesLevelCV": -1,
+      "RulesLevelCV": 2,
       "RulesLevelAF": -1,
       "RulesLevelCF": -1,
       "TechBase": 2,
@@ -2490,6 +2582,100 @@
       "CL_PrototypeFaction": "--",
       "IS_WentExtinct": true,
       "IS_ReIntroduced": true,
+      "IS_IsPrototype": false,
+      "CL_WentExtinct": false,
+      "CL_ReIntroduced": false,
+      "CL_IsPrototype": false,
+      "PBMAllowed": true,
+      "PIMAllowed": true,
+      "PrimitiveOnly": false,
+      "SuperHeavyCompatible": true,
+      "SuperHeavyOnly": false
+    },
+    "BattleForceAbilities": [
+      "ECM"
+    ]
+  },
+  "Prototype Guardian ECM Suite": {
+    "ActualName": "Prototype Guardian Electronic Countermeasure Suite",
+    "CritName": "Prototype GECM Suite",
+    "Type": "E",
+    "LookupName": "Prototype Guardian ECM Suite",
+    "MegaMekName": "IS Prototype Guardian ECM",
+    "BookReference": "Interstellar Operations",
+    "ChatName": "P-ECM",
+    "Specials": "-",
+    "Crits": 3,
+    "CVSpace": 1,
+    "LotSize": 0,
+    "AmmoIndex": 0,
+    "ShtRange": 0,
+    "MedRange": 0,
+    "LngRange": 6,
+    "Heat": 0,
+    "MaxAllowed": 0,
+    "Tonnage": 2,
+    "Cost": 1000000.0,
+    "OffBV": 0.0,
+    "DefBV": 61.0,
+    "MinTons": 0.0,
+    "MaxTons": 0.0,
+    "VariableIncrement": 0.0,
+    "TonsPerCrit": 0.0,
+    "CostPerTon": 0.0,
+    "HasAmmo": false,
+    "alloc_head": true,
+    "alloc_ct": true,
+    "alloc_torsos": true,
+    "alloc_arms": true,
+    "alloc_legs": true,
+    "alloc_front": true,
+    "alloc_sides": true,
+    "alloc_rear": true,
+    "alloc_turret": true,
+    "alloc_body": true,
+    "CanSplit": false,
+    "CanMountRear": true,
+    "Explosive": false,
+    "VariableSize": false,
+    "RequiresQuad": false,
+    "Availability": {
+      "IS_SL": "F",
+      "IS_SW": "X",
+      "IS_CI": "X",
+      "IS_DA": "X",
+      "IS_TechRating": "E",
+      "CL_SL": "X",
+      "CL_SW": "X",
+      "CL_CI": "X",
+      "CL_DA": "X",
+      "CL_TechRating": "X",
+      "IS_RandDStartDate": 0,
+      "IS_PrototypeDate": 0,
+      "IS_IntroDate": 2595,
+      "IS_ExtinctDate": 2597,
+      "IS_ReIntroDate": 0,
+      "CL_RandDStartDate": 0,
+      "CL_PrototypeDate": 0,
+      "CL_IntroDate": 0,
+      "CL_ExtinctDate": 0,
+      "CL_ReIntroDate": 0,
+      "RulesLevelBM": 3,
+      "RulesLevelIM": 3,
+      "RulesLevelCV": 3,
+      "RulesLevelAF": -1,
+      "RulesLevelCF": -1,
+      "TechBase": 0,
+      "IS_IntroFaction": "TH",
+      "IS_ReIntroFaction": "--",
+      "IS_RandDFaction": "--",
+      "IS_PrototypeFaction": "--",
+      "CL_IntroFaction": "--",
+      "CL_ReIntroFaction": "--",
+      "CL_RandDFaction": "--",
+      "CL_PrototypeFaction": "--",
+      "IS_WentExtinct": true,
+      "IS_ReIntroduced": false,
       "IS_IsPrototype": false,
       "CL_WentExtinct": false,
       "CL_ReIntroduced": false,
@@ -2616,6 +2802,7 @@
     "LngRange": 0,
     "Heat": 0,
     "MaxAllowed": 0,
+    "MaxAllowedPerLocation": 1,
     "Tonnage": 1.0,
     "Cost": 120000.0,
     "OffBV": 0.0,
@@ -2633,9 +2820,9 @@
     "alloc_legs": true,
     "alloc_front": true,
     "alloc_sides": true,
-    "alloc_rear": false,
+    "alloc_rear": true,
     "alloc_turret": true,
-    "alloc_body": true,
+    "alloc_body": false,
     "CanSplit": false,
     "CanMountRear": true,
     "Explosive": false,
@@ -2645,12 +2832,12 @@
       "IS_SL": "X",
       "IS_SW": "X",
       "IS_CI": "E",
-      "IS_DA": "D",
+      "IS_DA": "E",
       "IS_TechRating": "E",
       "CL_SL": "X",
       "CL_SW": "X",
       "CL_CI": "E",
-      "CL_DA": "D",
+      "CL_DA": "E",
       "CL_TechRating": "E",
       "IS_RandDStartDate": 3062,
       "IS_PrototypeDate": 3067,
@@ -2668,11 +2855,11 @@
       "RulesLevelAF": -1,
       "RulesLevelCF": -1,
       "TechBase": 2,
-      "IS_IntroFaction": "--",
+      "IS_IntroFaction": "LC",
       "IS_ReIntroFaction": "--",
       "IS_RandDFaction": "LA",
       "IS_PrototypeFaction": "LA",
-      "CL_IntroFaction": "--",
+      "CL_IntroFaction": "CDS",
       "CL_ReIntroFaction": "--",
       "CL_RandDFaction": "CDS",
       "CL_PrototypeFaction": "CDS",
@@ -2690,6 +2877,10 @@
     },
     "BattleForceAbilities": [
       "BHJ"
+    ],
+    "Exclusions": [
+      "HarJel II",
+      "HarJel III"
     ]
   },
   "HarJel II": {
@@ -2697,9 +2888,9 @@
     "CritName": "HarJel II",
     "Type": "PE",
     "LookupName": "HarJel II",
-    "MegaMekName": "HarJelII",
-    "BookReference": "FM3145",
-    "ChatName": "HrJlII",
+    "MegaMekName": "HarJel II Self-Repair System",
+    "BookReference": "Interstellar Operations",
+    "ChatName": "HrJl2",
     "Specials": "-",
     "Crits": 1,
     "CVSpace": 0,
@@ -2710,10 +2901,11 @@
     "LngRange": 0,
     "Heat": 0,
     "MaxAllowed": 0,
+    "MaxAllowedPerLocation": 1,
     "Tonnage": 2.0,
     "Cost": 240000.0,
     "OffBV": 0.0,
-    "DefBV": 0.0,
+    "DefBV": -1.0,
     "MinTons": 0.0,
     "MaxTons": 0.0,
     "VariableIncrement": 0.0,
@@ -2732,7 +2924,7 @@
     "alloc_body": false,
     "CanSplit": false,
     "CanMountRear": false,
-    "Explosive": true,
+    "Explosive": false,
     "VariableSize": false,
     "RequiresQuad": false,
     "Availability": {
@@ -2752,24 +2944,24 @@
       "IS_ExtinctDate": 0,
       "IS_ReIntroDate": 0,
       "CL_RandDStartDate": 0,
-      "CL_PrototypeDate": 0,
+      "CL_PrototypeDate": 3120,
       "CL_IntroDate": 3136,
       "CL_ExtinctDate": 0,
       "CL_ReIntroDate": 0,
-      "RulesLevelBM": 3,
+      "RulesLevelBM": 2,
       "RulesLevelIM": -1,
       "RulesLevelCV": -1,
       "RulesLevelAF": -1,
       "RulesLevelCF": -1,
-      "TechBase": 2,
-      "IS_IntroFaction": "–",
-      "IS_ReIntroFaction": "–",
-      "IS_RandDFaction": "–",
-      "IS_PrototypeFaction": "–",
+      "TechBase": 1,
+      "IS_IntroFaction": "--",
+      "IS_ReIntroFaction": "--",
+      "IS_RandDFaction": "--",
+      "IS_PrototypeFaction": "--",
       "CL_IntroFaction": "CSF",
-      "CL_ReIntroFaction": "–",
-      "CL_RandDFaction": "–",
-      "CL_PrototypeFaction": "–",
+      "CL_ReIntroFaction": "--",
+      "CL_RandDFaction": "--",
+      "CL_PrototypeFaction": "CSF",
       "IS_WentExtinct": false,
       "IS_ReIntroduced": false,
       "IS_IsPrototype": false,
@@ -2783,23 +2975,21 @@
       "SuperHeavyOnly": false
     },
     "BattleForceAbilities": [
-      ""
+      "BHJ2"
     ],
-    "Exclusions": {
-      "Exclusions": [
-        "HarJel III"
-      ],
-      "Excluder": "HarJel II"
-    }
+    "Exclusions": [
+      "HarJel",
+      "HarJel III"
+    ]
   },
   "HarJel III": {
     "ActualName": "HarJel III Self-Repair System",
     "CritName": "HarJel III",
     "Type": "PE",
     "LookupName": "HarJel III",
-    "MegaMekName": "HarJelIII",
-    "BookReference": "FM3145",
-    "ChatName": "HrJlIII",
+    "MegaMekName": "HarJel III Self-Repair System",
+    "BookReference": "Interstellar Operations",
+    "ChatName": "HrJl3",
     "Specials": "-",
     "Crits": 2,
     "CVSpace": 0,
@@ -2810,10 +3000,11 @@
     "LngRange": 0,
     "Heat": 0,
     "MaxAllowed": 0,
+    "MaxAllowedPerLocation": 1,
     "Tonnage": 3.0,
     "Cost": 360000.0,
     "OffBV": 0.0,
-    "DefBV": 0.0,
+    "DefBV": -2.0,
     "MinTons": 0.0,
     "MaxTons": 0.0,
     "VariableIncrement": 0.0,
@@ -2852,24 +3043,24 @@
       "IS_ExtinctDate": 0,
       "IS_ReIntroDate": 0,
       "CL_RandDStartDate": 0,
-      "CL_PrototypeDate": 0,
+      "CL_PrototypeDate": 3137,
       "CL_IntroDate": 3139,
       "CL_ExtinctDate": 0,
       "CL_ReIntroDate": 0,
-      "RulesLevelBM": 3,
+      "RulesLevelBM": 2,
       "RulesLevelIM": -1,
       "RulesLevelCV": -1,
       "RulesLevelAF": -1,
       "RulesLevelCF": -1,
-      "TechBase": 2,
-      "IS_IntroFaction": "–",
-      "IS_ReIntroFaction": "–",
-      "IS_RandDFaction": "–",
-      "IS_PrototypeFaction": "–",
+      "TechBase": 1,
+      "IS_IntroFaction": "--",
+      "IS_ReIntroFaction": "--",
+      "IS_RandDFaction": "--",
+      "IS_PrototypeFaction": "--",
       "CL_IntroFaction": "CSF",
-      "CL_ReIntroFaction": "–",
-      "CL_RandDFaction": "–",
-      "CL_PrototypeFaction": "–",
+      "CL_ReIntroFaction": "--",
+      "CL_RandDFaction": "--",
+      "CL_PrototypeFaction": "CSF",
       "IS_WentExtinct": false,
       "IS_ReIntroduced": false,
       "IS_IsPrototype": false,
@@ -2883,14 +3074,12 @@
       "SuperHeavyOnly": false
     },
     "BattleForceAbilities": [
-      ""
+      "BHJ3"
     ],
-    "Exclusions": {
-      "Exclusions": [
-        "HarJel II"
-      ],
-      "Excluder": "HarJel III"
-    }
+    "Exclusions": [
+      "HarJel",
+      "HarJel II"
+    ]
   },
   "TAG": {
     "ActualName": "Target Acquisition Gear",
@@ -3171,7 +3360,8 @@
       "SuperHeavyOnly": false
     },
     "BattleForceAbilities": [
-      "WAT"
+      "WAT",
+	  "ECM"
     ]
   },
   "Bridgelayer, Light": {
@@ -3549,19 +3739,16 @@
     "BattleForceAbilities": [
       "ENG"
     ],
-    "Exclusions": {
-      "Exclusions": [
-        "Backhoe",
-        "Chainsaw",
-        "Combine",
-        "Dual Saw",
-        "Heavy Duty Pile-Driver",
-        "Mining Drill",
-        "Rock Cutter",
-        "Wrecking Ball"
-      ],
-      "Excluder": "Bulldozer"
-    }
+    "Exclusions": [
+      "Backhoe",
+      "Chainsaw",
+      "Combine",
+      "Dual Saw",
+      "Heavy Duty Pile-Driver",
+      "Mining Drill",
+      "Rock Cutter",
+      "Wrecking Ball"
+    ]
   },
   "Fluid Suction System, Standard": {
     "ActualName": "Fluid Suction System, Standard",
@@ -6200,8 +6387,8 @@
     "CritName": "Nova CEWS",
     "Type": "E",
     "LookupName": "Nova CEWS",
-    "MegaMekName": "NCEWS",
-    "BookReference": "Wars of Reaving",
+    "MegaMekName": "NovaCEWS",
+    "BookReference": "Interstellar Operations",
     "ChatName": "NCEWS",
     "Specials": "-",
     "Crits": 1,
@@ -6238,6 +6425,9 @@
     "Explosive": false,
     "VariableSize": false,
     "RequiresQuad": false,
+	"RequiresFusion": true,
+    "RequiresNuclear": false,
+    "RequiresPowerAmps": true,
     "Availability": {
       "IS_SL": "X",
       "IS_SW": "X",
@@ -6247,7 +6437,7 @@
       "CL_SL": "X",
       "CL_SW": "X",
       "CL_CI": "F",
-      "CL_DA": "E",
+      "CL_DA": "X",
       "CL_TechRating": "F",
       "IS_RandDStartDate": 0,
       "IS_PrototypeDate": 0,
@@ -6257,7 +6447,7 @@
       "CL_RandDStartDate": 0,
       "CL_PrototypeDate": 0,
       "CL_IntroDate": 3065,
-      "CL_ExtinctDate": 0,
+      "CL_ExtinctDate": 3085,
       "CL_ReIntroDate": 0,
       "RulesLevelBM": 3,
       "RulesLevelIM": 3,
@@ -6269,14 +6459,14 @@
       "IS_ReIntroFaction": "--",
       "IS_RandDFaction": "--",
       "IS_PrototypeFaction": "--",
-      "CL_IntroFaction": "Soc",
+      "CL_IntroFaction": "CCY",
       "CL_ReIntroFaction": "--",
       "CL_RandDFaction": "--",
       "CL_PrototypeFaction": "--",
       "IS_WentExtinct": false,
       "IS_ReIntroduced": false,
       "IS_IsPrototype": false,
-      "CL_WentExtinct": false,
+      "CL_WentExtinct": true,
       "CL_ReIntroduced": false,
       "CL_IsPrototype": false,
       "PBMAllowed": true,
@@ -6286,7 +6476,10 @@
       "SuperHeavyOnly": false
     },
     "BattleForceAbilities": [
-      "-"
+      "NOVA",
+	  "PRB",
+	  "RCN",
+	  "ECM"
     ]
   },
   "Centurion Weapon System": {
@@ -7041,6 +7234,202 @@
       "-"
     ]
   },
+  "RISC Viral Jammer (Decoy)": {
+    "ActualName": "RISC Viral Jammer (Decoy)",
+    "CritName": "RISC Viral Jammer (Decoy)",
+    "Type": "E",
+    "LookupName": "RISC Viral Jammer (Decoy)",
+    "MegaMekName": "RISC Viral Jammer (Decoy)",
+    "BookReference": "Intersteller Operations",
+    "ChatName": "VJ(D)",
+    "Specials": "-",
+    "Crits": 1,
+    "CVSpace": 1,
+    "LotSize": 0,
+    "AmmoIndex": 0,
+    "ShtRange": 0,
+    "MedRange": 0,
+    "LngRange": 17,
+    "Heat": 12,
+    "MaxAllowed": 1,
+    "Tonnage": 2.5,
+    "Cost": 990000.0,
+    "OffBV": 0.0,
+    "DefBV": 284.0,
+    "MinTons": 0.0,
+    "MaxTons": 0.0,
+    "VariableIncrement": 0.0,
+    "TonsPerCrit": 0.0,
+    "CostPerTon": 0.0,
+    "HasAmmo": false,
+    "alloc_head": true,
+    "alloc_ct": true,
+    "alloc_torsos": true,
+    "alloc_arms": true,
+    "alloc_legs": true,
+    "alloc_front": true,
+    "alloc_sides": true,
+    "alloc_rear": true,
+    "alloc_turret": true,
+    "alloc_body": true,
+    "CanSplit": false,
+    "CanMountRear": true,
+    "Explosive": false,
+    "VariableSize": false,
+    "RequiresQuad": false,
+	"RequiresPowerAmps": true,
+    "Availability": {
+      "IS_SL": "X",
+      "IS_SW": "X",
+      "IS_CI": "X",
+      "IS_DA": "F",
+      "IS_TechRating": "F",
+      "CL_SL": "X",
+      "CL_SW": "X",
+      "CL_CI": "X",
+      "CL_DA": "X",
+      "CL_TechRating": "X",
+      "IS_RandDStartDate": 3135,
+      "IS_PrototypeDate": 3136,
+      "IS_IntroDate": 3136,
+      "IS_ExtinctDate": 0,
+      "IS_ReIntroDate": 0,
+      "CL_RandDStartDate": 0,
+      "CL_PrototypeDate": 0,
+      "CL_IntroDate": 0,
+      "CL_ExtinctDate": 0,
+      "CL_ReIntroDate": 0,
+      "RulesLevelBM": 3,
+      "RulesLevelIM": 3,
+      "RulesLevelCV": 3,
+      "RulesLevelAF": -1,
+      "RulesLevelCF": -1,
+      "TechBase": 0,
+      "IS_IntroFaction": "RS",
+      "IS_ReIntroFaction": "--",
+      "IS_RandDFaction": "RS",
+      "IS_PrototypeFaction": "RS",
+      "CL_IntroFaction": "--",
+      "CL_ReIntroFaction": "--",
+      "CL_RandDFaction": "--",
+      "CL_PrototypeFaction": "--",
+      "IS_WentExtinct": false,
+      "IS_ReIntroduced": false,
+      "IS_IsPrototype": true,
+      "CL_WentExtinct": false,
+      "CL_ReIntroduced": false,
+      "CL_IsPrototype": false,
+      "PBMAllowed": true,
+      "PIMAllowed": true,
+      "PrimitiveOnly": false,
+      "SuperHeavyCompatible": true,
+      "SuperHeavyOnly": false
+    },
+    "BattleForceAbilities": [
+      "DJ"
+    ],
+	"Exclusions": [
+      "RISC Viral Jammer (Homing)"
+    ]
+  },
+  "RISC Viral Jammer (Homing)": {
+    "ActualName": "RISC Viral Jammer (Homing)",
+    "CritName": "RISC Viral Jammer (Homing)",
+    "Type": "E",
+    "LookupName": "RISC Viral Jammer (Homing)",
+    "MegaMekName": "RISC Viral Jammer (Homing)",
+    "BookReference": "Intersteller Operations",
+    "ChatName": "VJ(H)",
+    "Specials": "-",
+    "Crits": 1,
+    "CVSpace": 1,
+    "LotSize": 0,
+    "AmmoIndex": 0,
+    "ShtRange": 0,
+    "MedRange": 0,
+    "LngRange": 17,
+    "Heat": 12,
+    "MaxAllowed": 1,
+    "Tonnage": 2.5,
+    "Cost": 990000.0,
+    "OffBV": 0.0,
+    "DefBV": 284.0,
+    "MinTons": 0.0,
+    "MaxTons": 0.0,
+    "VariableIncrement": 0.0,
+    "TonsPerCrit": 0.0,
+    "CostPerTon": 0.0,
+    "HasAmmo": false,
+    "alloc_head": true,
+    "alloc_ct": true,
+    "alloc_torsos": true,
+    "alloc_arms": true,
+    "alloc_legs": true,
+    "alloc_front": true,
+    "alloc_sides": true,
+    "alloc_rear": true,
+    "alloc_turret": true,
+    "alloc_body": true,
+    "CanSplit": false,
+    "CanMountRear": true,
+    "Explosive": false,
+    "VariableSize": false,
+    "RequiresQuad": false,
+	"RequiresPowerAmps": true,
+    "Availability": {
+      "IS_SL": "X",
+      "IS_SW": "X",
+      "IS_CI": "X",
+      "IS_DA": "F",
+      "IS_TechRating": "F",
+      "CL_SL": "X",
+      "CL_SW": "X",
+      "CL_CI": "X",
+      "CL_DA": "X",
+      "CL_TechRating": "X",
+      "IS_RandDStartDate": 3135,
+      "IS_PrototypeDate": 3137,
+      "IS_IntroDate": 3137,
+      "IS_ExtinctDate": 0,
+      "IS_ReIntroDate": 0,
+      "CL_RandDStartDate": 0,
+      "CL_PrototypeDate": 0,
+      "CL_IntroDate": 0,
+      "CL_ExtinctDate": 0,
+      "CL_ReIntroDate": 0,
+      "RulesLevelBM": 3,
+      "RulesLevelIM": 3,
+      "RulesLevelCV": 3,
+      "RulesLevelAF": -1,
+      "RulesLevelCF": -1,
+      "TechBase": 0,
+      "IS_IntroFaction": "RS",
+      "IS_ReIntroFaction": "--",
+      "IS_RandDFaction": "RS",
+      "IS_PrototypeFaction": "RS",
+      "CL_IntroFaction": "--",
+      "CL_ReIntroFaction": "--",
+      "CL_RandDFaction": "--",
+      "CL_PrototypeFaction": "--",
+      "IS_WentExtinct": false,
+      "IS_ReIntroduced": false,
+      "IS_IsPrototype": true,
+      "CL_WentExtinct": false,
+      "CL_ReIntroduced": false,
+      "CL_IsPrototype": false,
+      "PBMAllowed": true,
+      "PIMAllowed": true,
+      "PrimitiveOnly": false,
+      "SuperHeavyCompatible": true,
+      "SuperHeavyOnly": false
+    },
+    "BattleForceAbilities": [
+      "HJ"
+    ],
+	"Exclusions": [
+      "RISC Viral Jammer (Decoy)"
+    ]
+  },
   "Radical Heat Sink": {
     "ActualName": "Radical Heat Sink",
     "CritName": "Radical Heat Sink",
@@ -7112,13 +7501,13 @@
       "RulesLevelCF": -1,
       "TechBase": 0,
       "IS_IntroFaction": "FS",
-      "IS_ReIntroFaction": "–",
-      "IS_RandDFaction": "–",
-      "IS_PrototypeFaction": "–",
-      "CL_IntroFaction": "–",
-      "CL_ReIntroFaction": "–",
-      "CL_RandDFaction": "–",
-      "CL_PrototypeFaction": "–",
+      "IS_ReIntroFaction": "--",
+      "IS_RandDFaction": "--",
+      "IS_PrototypeFaction": "--",
+      "CL_IntroFaction": "--",
+      "CL_ReIntroFaction": "--",
+      "CL_RandDFaction": "--",
+      "CL_PrototypeFaction": "--",
       "IS_WentExtinct": false,
       "IS_ReIntroduced": false,
       "IS_IsPrototype": false,
@@ -7134,11 +7523,102 @@
     "BattleForceAbilities": [
       "-"
     ],
-    "Exclusions": {
-      "Exclusions": [
-        "Coolant Pod"
-      ],
-      "Excluder": "Radical Heat Sink"
-    }
+    "Exclusions": [
+      "Coolant Pod"
+    ]
+  },
+  "RISC Advanced Point Defense System": {
+    "ActualName": "RISC Advanced Point Defense System",
+    "CritName": "Advanced Point Defense System",
+    "Type": "PD",
+    "LookupName": "RISC Advanced Point Defense System",
+    "MegaMekName": "ISAPDS",
+    "BookReference": "Interstellar Operations",
+    "ChatName": "APDS",
+    "Specials": "-",
+    "Crits": 2,
+    "CVSpace": 1,
+    "LotSize": 12,
+    "AmmoIndex": 512,
+    "ShtRange": 0,
+    "MedRange": 0,
+    "LngRange": 3,
+    "Heat": 2,
+    "MaxAllowed": 0,
+    "Tonnage": 3.0,
+    "Cost": 200000.0,
+    "OffBV": 0.0,
+    "DefBV": 64.0,
+    "MinTons": 0.0,
+    "MaxTons": 0.0,
+    "VariableIncrement": 0.0,
+    "TonsPerCrit": 0.0,
+    "CostPerTon": 0.0,
+    "HasAmmo": true,
+    "alloc_head": true,
+    "alloc_ct": true,
+    "alloc_torsos": true,
+    "alloc_arms": true,
+    "alloc_legs": true,
+    "alloc_front": true,
+    "alloc_sides": true,
+    "alloc_rear": true,
+    "alloc_turret": true,
+    "alloc_body": false,
+    "CanSplit": false,
+    "CanMountRear": true,
+    "Explosive": false,
+    "VariableSize": false,
+    "RequiresQuad": false,
+    "Availability": {
+      "IS_SL": "X",
+      "IS_SW": "X",
+      "IS_CI": "X",
+      "IS_DA": "E",
+      "IS_TechRating": "E",
+      "CL_SL": "X",
+      "CL_SW": "X",
+      "CL_CI": "X",
+      "CL_DA": "X",
+      "CL_TechRating": "X",
+      "IS_RandDStartDate": 0,
+      "IS_PrototypeDate": 3134,
+      "IS_IntroDate": 3137,
+      "IS_ExtinctDate": 0,
+      "IS_ReIntroDate": 0,
+      "CL_RandDStartDate": 0,
+      "CL_PrototypeDate": 0,
+      "CL_IntroDate": 0,
+      "CL_ExtinctDate": 0,
+      "CL_ReIntroDate": 0,
+      "RulesLevelBM": 2,
+      "RulesLevelIM": 2,
+      "RulesLevelCV": 2,
+      "RulesLevelAF": -1,
+      "RulesLevelCF": -1,
+      "TechBase": 0,
+      "IS_IntroFaction": "RS",
+      "IS_ReIntroFaction": "--",
+      "IS_RandDFaction": "--",
+      "IS_PrototypeFaction": "RS",
+      "CL_IntroFaction": "--",
+      "CL_ReIntroFaction": "--",
+      "CL_RandDFaction": "--",
+      "CL_PrototypeFaction": "--",
+      "IS_WentExtinct": false,
+      "IS_ReIntroduced": false,
+      "IS_IsPrototype": false,
+      "CL_WentExtinct": false,
+      "CL_ReIntroduced": false,
+      "CL_IsPrototype": false,
+      "PBMAllowed": true,
+      "PIMAllowed": true,
+      "PrimitiveOnly": false,
+      "SuperHeavyCompatible": true,
+      "SuperHeavyOnly": false
+    },
+    "BattleForceAbilities": [
+      "RAMS"
+    ]
   }
 }
